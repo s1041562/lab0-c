@@ -80,7 +80,7 @@ bool q_remove_head(queue_t *q, char *sp, size_t bufsize);
 int q_size(queue_t *q);
 
 /*
- * Reverse elements in queue
+ * Reverse elements in  queue
  * No effect if q is NULL or empty
  * This function should not allocate or free any list elements
  * (e.g., by calling q_insert_head, q_insert_tail, or q_remove_head).
