@@ -39,12 +39,25 @@ void q_free(queue_t *q)
 bool q_insert_head(queue_t *q, char *s)
 {
     list_ele_t *newh;
-    /* TODO: What should you do if the q is NULL? */
     newh = malloc(sizeof(list_ele_t));
-    /* Don't forget to allocate space for the string and copy it */
-    /* What if either call to malloc returns NULL? */
+    if (!q || !newh) {
+        return false;
+    }
+    int length = strlen(s) + 1;
+    newh->value = malloc(length * sizeof(char));
+    if (!newh->value) {
+        /*Avoid memory leak.*/
+        free(newh);
+        return false;
+    }
+    memset(newh->value, '\0', length);
+    strncpy(newh->value, s, strlen(s));
     newh->next = q->head;
     q->head = newh;
+    /* Check newh is the only element*/
+    if (!q->tail) {
+        q->tail = newh;
+    }
     return true;
 }
 
