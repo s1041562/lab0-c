@@ -164,6 +164,58 @@ void q_reverse(queue_t *q)
  */
 void q_sort(queue_t *q)
 {
-    /* TODO: You need to write the code for this function */
-    /* TODO: Remove the above comment when you are about to implement. */
+    if (!q || q->size <= 1) {
+        return;
+    }
+    q->head = merge_sort_list(q->head);
+
+    while (q->tail->next) {
+        q->tail = q->tail->next;
+    }
+    return;
+}
+
+list_ele_t *merge_sort_list(list_ele_t *head)
+{
+    if (!head || !head->next) {
+        return head;
+    }
+    list_ele_t *fast = head->next;
+    list_ele_t *slow = head;
+    /* spilt list */
+    while (fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    fast = slow->next;
+    slow->next = NULL;
+    list_ele_t *l1 = merge_sort_list(head);
+    list_ele_t *l2 = merge_sort_list(fast);
+    return merge(l1, l2);
+}
+
+list_ele_t *merge(list_ele_t *l1, list_ele_t *l2)
+{
+    list_ele_t q;
+    list_ele_t *temp = &q;
+    size_t len = (strlen(l1->value) < strlen(l2->value)) ? strlen(l1->value)
+                                                         : strlen(l2->value);
+    while (l1 && l2) {
+        if (strncmp(l1->value, l2->value, len) < 0) {
+            temp->next = l1;
+            temp = temp->next;
+            l1 = l1->next;
+        } else {
+            temp->next = l2;
+            temp = temp->next;
+            l2 = l2->next;
+        }
+    }
+    if (l1) {
+        temp->next = l1;
+    }
+    if (l2) {
+        temp->next = l2;
+    }
+    return q.next;
 }
